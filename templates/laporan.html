@@ -1,0 +1,48 @@
+
+{% extends "base.html" %}
+{% block title %}Laporan | SIPESAT{% endblock %}
+
+{% block content %}
+<header class="page-header no-print">
+    <div>
+        <h1>Laporan Data Sekolah</h1>
+        <p>Rekapitulasi data sekolah yang tersimpan di database.</p>
+    </div>
+    <button class="primary-button" onclick="window.print()">Cetak Laporan</button>
+</header>
+
+<section class="panel report-panel">
+    <div class="report-heading">
+        <h2>LAPORAN PENDATAAN SEKOLAH</h2>
+        <p>SMA/SMK Aceh Tamiang</p>
+        <p>Total sekolah: <strong>{{ sekolah|length }}</strong></p>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th><th>NPSN</th><th>Nama Sekolah</th>
+                    <th>Jenjang</th><th>Kecamatan</th><th>Kepala Sekolah</th>
+                    <th>Jumlah Siswa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in sekolah %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ s.npsn }}</td>
+                    <td>{{ s.nama_sekolah }}</td>
+                    <td>{{ s.jenjang }}</td>
+                    <td>{{ s.kecamatan }}</td>
+                    <td>{{ s.kepala_sekolah or '-' }}</td>
+                    <td>{{ s.jumlah_siswa }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="7">Belum ada data sekolah.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

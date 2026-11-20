@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SipeS{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% if session.get('admin_id') %}
+    <aside class="sidebar">
+        <h2>SipeS</h2>
+        <p>Sistem Pendataan Sekolah</p>
+        <nav>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('daftar_sekolah') }}">Data Sekolah</a>
+            <a href="{{ url_for('tambah_sekolah') }}">Tambah Sekolah</a>
+            <a href="{{ url_for('laporan') }}">Laporan</a>
+            <a href="{{ url_for('kelola_admin') }}">Kelola Admin</a>
+        </nav>
+        <form action="{{ url_for('logout') }}" method="POST">
+            <button type="submit">Logout</button>
+        </form>
+    </aside>
+    {% endif %}
+
+    <main class="{% if session.get('admin_id') %}main-content{% else %}login-main{% endif %}">
+       
+{% if session.get('admin_id') %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+{% endif %}
+
+
+        {% block content %}{% endblock %}
+    </main>
+    
+</body>
+</html>

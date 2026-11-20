@@ -1,0 +1,110 @@
+
+{% extends "base.html" %}
+
+{% block title %}Kelola Admin | SIPESAT{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Kelola Admin</h1>
+    <p>Tambah dan kelola akun administrator SIPESAT.</p>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="card">
+    <h2>Tambah Akun Admin</h2>
+
+    <form method="POST" action="{{ url_for('kelola_admin') }}">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                minlength="3"
+                required
+                placeholder="Masukkan username baru"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                minlength="8"
+                required
+                placeholder="Minimal 8 karakter"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="konfirmasi_password">Konfirmasi Password</label>
+            <input
+                type="password"
+                id="konfirmasi_password"
+                name="konfirmasi_password"
+                minlength="8"
+                required
+                placeholder="Ulangi password"
+            >
+        </div>
+
+        <button type="submit" class="primary-button">
+            Tambahkan Admin
+        </button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Daftar Akun Admin</h2>
+
+    {% if daftar_admin %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Username</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for admin in daftar_admin %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ admin.username }}</td>
+                        <td>
+                            {% if admin.id != session.get('admin_id') %}
+                            <form
+                                method="POST"
+                                action="{{ url_for('hapus_admin', id=admin.id) }}"
+                                onsubmit="return confirm('Yakin ingin menghapus akun ini?')"
+                            >
+                                <button type="submit" class="danger-button">
+                                    Hapus
+                                </button>
+                            </form>
+                            {% else %}
+                                Akun yang sedang digunakan
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>Belum ada akun admin.</p>
+    {% endif %}
+</div>
+{% endblock %}

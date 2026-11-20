@@ -1,0 +1,62 @@
+
+{% extends "base.html" %}
+{% block title %}Dashboard | SIPESAT{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <div>
+        <h1>Dashboard</h1>
+        <p>Selamat datang, {{ session.get('admin_username') }}.</p>
+    </div>
+    <span class="admin-label">Administrator</span>
+</header>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <p>Total Sekolah</p>
+        <h2>{{ total_sekolah }}</h2>
+    </div>
+    <div class="stat-card">
+        <p>Sekolah SMA</p>
+        <h2>{{ total_sma }}</h2>
+    </div>
+    <div class="stat-card">
+        <p>Sekolah SMK</p>
+        <h2>{{ total_smk }}</h2>
+    </div>
+</div>
+
+<section class="panel">
+    <div class="panel-heading">
+        <h2>Data Sekolah Terbaru</h2>
+        <a class="primary-button" href="{{ url_for('tambah_sekolah') }}">+ Tambah Data</a>
+    </div>
+
+    {% if sekolah_terbaru %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>NPSN</th>
+                    <th>Nama Sekolah</th>
+                    <th>Jenjang</th>
+                    <th>Kecamatan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in sekolah_terbaru %}
+                <tr>
+                    <td>{{ s.npsn }}</td>
+                    <td>{{ s.nama_sekolah }}</td>
+                    <td>{{ s.jenjang }}</td>
+                    <td>{{ s.kecamatan }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">Belum ada data sekolah. Silakan tambahkan data pertama.</p>
+    {% endif %}
+</section>
+{% endblock %}

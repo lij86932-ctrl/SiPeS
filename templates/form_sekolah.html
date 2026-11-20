@@ -1,0 +1,60 @@
+
+{% extends "base.html" %}
+{% block title %}{{ mode }} Sekolah | SIPESAT{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <div>
+        <h1>{{ mode }} Data Sekolah</h1>
+        <p>Isi informasi sekolah dengan benar.</p>
+    </div>
+    <a href="{{ url_for('daftar_sekolah') }}" class="primary-button">Kembali</a>
+</header>
+
+<section class="panel form-panel">
+    <form method="POST">
+        <div class="form-grid">
+            <div>
+                <label for="npsn">NPSN *</label>
+                <input id="npsn" name="npsn" value="{{ data.get('npsn', '') }}" required>
+            </div>
+            <div>
+                <label for="nama_sekolah">Nama Sekolah *</label>
+                <input id="nama_sekolah" name="nama_sekolah"
+                       value="{{ data.get('nama_sekolah', '') }}" required>
+            </div>
+            <div>
+                <label for="jenjang">Jenjang *</label>
+                <select id="jenjang" name="jenjang" required>
+                    <option value="">Pilih jenjang</option>
+                    <option value="SMA" {% if data.get('jenjang') == 'SMA' %}selected{% endif %}>SMA</option>
+                    <option value="SMK" {% if data.get('jenjang') == 'SMK' %}selected{% endif %}>SMK</option>
+                </select>
+            </div>
+            <div>
+                <label for="kecamatan">Kecamatan *</label>
+                <input id="kecamatan" name="kecamatan"
+                       value="{{ data.get('kecamatan', '') }}" required>
+            </div>
+            <div>
+                <label for="kepala_sekolah">Kepala Sekolah</label>
+                <input id="kepala_sekolah" name="kepala_sekolah"
+                       value="{{ data.get('kepala_sekolah', '') }}">
+            </div>
+            <div>
+                <label for="jumlah_siswa">Jumlah Siswa</label>
+                <input id="jumlah_siswa" name="jumlah_siswa" type="number" min="0"
+                       value="{{ data.get('jumlah_siswa', 0) }}">
+            </div>
+            <div class="full-field">
+                <label for="alamat">Alamat Sekolah</label>
+                <textarea id="alamat" name="alamat" rows="3">{{ data.get('alamat', '') }}</textarea>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="primary-button" type="submit">Simpan Data</button>
+            <a href="{{ url_for('daftar_sekolah') }}" class="primary-button">Batal</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

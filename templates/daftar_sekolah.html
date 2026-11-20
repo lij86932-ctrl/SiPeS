@@ -1,0 +1,59 @@
+
+{% extends "base.html" %}
+{% block title %}Data Sekolah | SipeS{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <div>
+        <h1>Data Sekolah</h1>
+        <p>Kelola seluruh data sekolah yang terdaftar.</p>
+    </div>
+    <a class="primary-button" href="{{ url_for('tambah_sekolah') }}">+ Tambah Sekolah</a>
+</header>
+
+<section class="panel">
+    <form method="GET" class="filter-form">
+        <input type="search" name="q" value="{{ q }}"
+               placeholder="Cari nama, NPSN, kecamatan...">
+        <select name="jenjang">
+            <option value="">Semua Jenjang</option>
+            <option value="SMA" {% if jenjang == 'SMA' %}selected{% endif %}>SMA</option>
+            <option value="SMK" {% if jenjang == 'SMK' %}selected{% endif %}>SMK</option>
+        </select>
+        <button class="primary-button" type="submit">Cari</button>
+        <a class="secondary-button" href="{{ url_for('daftar_sekolah') }}">Reset</a>
+    </form>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th><th>NPSN</th><th>Nama Sekolah</th>
+                    <th>Jenjang</th><th>Kecamatan</th><th>Jumlah Siswa</th><th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in sekolah %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ s.npsn }}</td>
+                    <td>{{ s.nama_sekolah }}</td>
+                    <td><span class="tag">{{ s.jenjang }}</span></td>
+                    <td>{{ s.kecamatan }}</td>
+                    <td>{{ s.jumlah_siswa }}</td>
+                    <td class="actions">
+                        <a class="edit-link" href="{{ url_for('edit_sekolah', id=s.id) }}">Edit</a>
+                        <form method="POST" action="{{ url_for('hapus_sekolah', id=s.id) }}"
+                              onsubmit="return confirm('Yakin ingin menghapus sekolah ini?')">
+                            <button class="delete-button" type="submit">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="7" class="empty-state">Data sekolah tidak ditemukan.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
